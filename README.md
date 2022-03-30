@@ -1,6 +1,6 @@
 # PlexTrac Rapid Response Runbooks
 
-This repository houses pre-made runbooks developed by PlexTrac's internal security team for identifying exposure to risks associated with various vulnerabilities.
+This repository contains runbooks developed by PlexTrac's internal security team for assisting in identifying and assessing risks for security vulnerabilities
 
 ## Project Structure
 
