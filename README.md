@@ -1,2 +1,2 @@
 # rapid-response-runbooks
-Runbooks developed by PlexTrac's internal security team for identifying ways to identify risk for vulnerabilities
+Runbooks developed by PlexTrac's internal security team for assisting in identifying and assessing risks for security vulnerabilities
