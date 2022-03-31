@@ -122,7 +122,7 @@ procedures:
         Nmap done: 1 IP address (1 host up) scanned in 6.41</code></pre>
     categories: !<tag:yaml.org,2002:js/undefined> ''
   - id: cl1e1jyx300ph0vzt06l69oh8
-    name: Application Auditing (Internal)
+    name: Application Auditing (with source code)
     description: >-
       <p>Instructions for identifying if your application includes Spring Core
       as a dependency.</p>
@@ -142,6 +142,39 @@ procedures:
         for:</strong></p><p><code>spring-beans-*.jar</code></p><p>&nbsp;</p><p>If
         you find any results, your application is running Spring Core and is
         vulnerable to <code>Spring4Shell</code>.</p><p>&nbsp;</p>
+    categories: !<tag:yaml.org,2002:js/undefined> ''
+  - id: cl1f3adud00qv0vzt05ob8286
+    name: Application Auditing (External)
+    description: >-
+      <p>Instructions for safely identifying if your application includes the
+      Spring4Shell vulnerability.</p><p><br>&nbsp;</p>
+    shortName: pt-pt-labs-application-audit-external
+    executionSteps:
+      - >-
+        <p><strong>Run the command:</strong></p><pre><code
+        class="language-plaintext">curl
+        http://&lt;host:port&gt;/stupidRumor_war/index?class.module.classLoader.URLs%5B0%5D=0
+
+        &lt;!doctype html&gt;&lt;html lang="en"&gt;&lt;head&gt;&lt;title&gt;HTTP
+        Status 400 – Bad Request&lt;/title&gt;&lt;style type="text/css"&gt;body
+        {font-family:Tahoma,Arial,sans-serif;} h1, h2, h3, b
+        {color:white;background-color:#525D76;} h1 {font-size:22px;} h2
+        {font-size:16px;} h3 {font-size:14px;} p {font-size:12px;} a
+        {color:black;} .line
+        {height:1px;background-color:#525D76;border:none;}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;h1&gt;HTTP
+        Status 400 – Bad Request&lt;/h1&gt;&lt;hr class="line"
+        /&gt;&lt;p&gt;&lt;b&gt;Type&lt;/b&gt; Status
+        Report&lt;/p&gt;&lt;p&gt;&lt;b&gt;Description&lt;/b&gt; The server
+        cannot or will not process the request due to something that is
+        perceived to be a client error (e.g., malformed request syntax, invalid
+        request message framing, or deceptive request routing).&lt;/p&gt;&lt;hr
+        class="line" /&gt;&lt;h3&gt;Apache
+        Tomcat/9.0.60&lt;/h3&gt;&lt;/body&gt;&lt;/html&gt;</code></pre><p><strong>Ensure
+        that you replace/update the following from the command
+        above:</strong></p><ul><li>&lt;host:port&gt; (e.g.
+        127.0.0.1:8080)</li></ul><p><strong>Expected output:</strong></p><figure
+        class="image"><img
+        src="/api/v1/uploads/93d58bdc-3ad1-473d-8a67-b494b8328aaa.png"></figure><p>&nbsp;</p>
     categories: !<tag:yaml.org,2002:js/undefined> ''
   - id: cl1e2356v00pi0vzt320nex0h
     name: Exploiting Spring4Shell Vulnerability
