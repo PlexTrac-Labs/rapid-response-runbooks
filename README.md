@@ -10,7 +10,9 @@ Runbooks for assessing your environment's level of exposure are separated into d
 
 1. Fork this repository
 2. Create a branch for your customizations
-3. Submit a PR back to this repository for review
+3. Create a new directory to house your additions
+4. Add the runbook file (.yml)
+5. Submit a PR back to this repository for review
 
 ## Disclaimer
 
